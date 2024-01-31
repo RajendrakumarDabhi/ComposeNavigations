@@ -12,30 +12,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.composenavigations.ui.theme.ComposeNavigationsTheme
+import com.example.composenavigations.views.BottomNavigation.BottomNavigationSample
+import com.example.composenavigations.views.navigationdrawer.NavigationDrawerSample
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeNavigationsTheme {
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "bottom_navigation") {
 
+                    composable("navigation_drawer") {
+                        NavigationDrawerSample()
+                    }
+
+                    composable("bottom_navigation") {
+                        BottomNavigationSample()
+                    }
+                }
             }
         }
-    }
-}
-
-@Composable
-fun Body(paddingValues: PaddingValues) {
-    Column(modifier = Modifier.padding(paddingValues)) {
-        Text(text = "Hello World")
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun GreetingPreview() {
-    ComposeNavigationsTheme {
-        Body(PaddingValues(1.dp))
     }
 }
