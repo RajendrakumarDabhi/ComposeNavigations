@@ -2,13 +2,6 @@ package com.example.composenavigations.views.navigationdrawer
 
 import android.util.Log
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -25,37 +18,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.composenavigations.utils.BottomNavItems
+import com.example.composenavigations.utils.Constants
 import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationDrawerSample() {
-    val INFO = "Info"
-    val HOME = "Home"
-    val SETTINGS = "Settings"
-    val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val navController = rememberNavController()
-    val items = listOf(
-        NavigationItem(
-            title = INFO,
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-        ),
-        NavigationItem(
-            title = HOME,
-            selectedIcon = Icons.Filled.Info,
-            unselectedIcon = Icons.Outlined.Info,
-            badgeCount = 45
-        ),
-        NavigationItem(
-            title = SETTINGS,
-            selectedIcon = Icons.Filled.Settings,
-            unselectedIcon = Icons.Outlined.Settings,
-        ),
-    )
+    val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
     val scope = rememberCoroutineScope()
     val selectedItemIndex by rememberSaveable {
         mutableIntStateOf(0)
@@ -65,7 +39,7 @@ fun NavigationDrawerSample() {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                items.forEachIndexed { index, item ->
+                Constants.NavigationItems.forEachIndexed { index, item ->
                     NavigationDrawerItem(
                         label = {
                             Text(text = item.title)
@@ -100,22 +74,22 @@ fun NavigationDrawerSample() {
 
             }
         }) {
-        NavHost(navController = navController, startDestination = SETTINGS) {
-            composable(SETTINGS) {
+        NavHost(navController = navController, startDestination = BottomNavItems.Home.route) {
+            composable(BottomNavItems.Settings.route) {
                 SettingsScreen {
                     scope.launch {
                         drawerState.open()
                     }
                 }
             }
-            composable(HOME) {
+            composable(BottomNavItems.Home.route) {
                 HomeScreen {
                     scope.launch {
                         drawerState.open()
                     }
                 }
             }
-            composable(INFO) {
+            composable(BottomNavItems.Info.route) {
                 InfoScreen {
                     scope.launch {
                         drawerState.open()
